@@ -1,5 +1,9 @@
 # swarmstack/errbot-docker
 
+# UNDER DEVELOPMENT- NON USABLE YET
+
+This will be a slimmer Errbot docker image to replace swarmstack/errbot-docker-alertmanager and will only contain a vanilla Err with it's available backends. Plugins will be encouraged to be installed and configured via the bot, with instructions here for Alertmanager configuration for Prometheus.
+
 Docker image for [Err](http://errbot.io), a chat-bot designed to be easily deployable, extensible and maintainable.
 
 [https://hub.docker.com/r/swarmstack/errbot-docker/](https://hub.docker.com/r/swarmstack/errbot-docker/)

@@ -17,11 +17,11 @@ echo LC_ALL="en_US.utf8" >> /etc/environment
 #apk upgrade --no-cache
 
 # In newer versions of Alpine Pip is not included in Python3 package
-#if [[ $ERR_PYTHON_VERSION == "3" ]]; then
-#	python3 -m ensurepip && \
-#	pip3 install --upgrade pip setuptools && \
-#rm -rf /root/.cache
-#fi
+if [[ $ERR_PYTHON_VERSION == "3" ]]; then
+	python3 -m ensurepip && \
+	pip3 install --upgrade pip setuptools && \
+rm -rf /root/.cache
+fi
 
 # TLS certs and sudo are needed, curl and vim are tremendously useful when entering
 # a container for debugging (while barely increasing image size)

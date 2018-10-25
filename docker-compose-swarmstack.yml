@@ -1,0 +1,36 @@
+version: "3.3"
+
+networks:
+  default:
+    external:
+      name: swarmstack_net
+
+volumes:
+    errbot-data:
+      driver: pxd
+      driver_opts:
+        repl: 2
+        size: 2
+
+configs:
+  errbot_config:
+    file: ./config.py
+
+services:
+  errbot:
+    image: swarmstack/errbot-docker
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 384M
+    command: err
+    configs:
+      - source: errbot_config
+        target: /src/config.py
+    volumes:
+      - errbot-data:/src/data
+

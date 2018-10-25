@@ -1,0 +1,24 @@
+version: "3.3"
+
+configs:
+  errbot_config:
+    file: ./config.py
+
+services:
+  errbot:
+    image: swarmstack/errbot-docker
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 384M
+    command: err
+    configs:
+      - source: errbot_config
+        target: /src/config.py
+    volumes:
+      - ./local_bind_volume_dir:/src/data
+

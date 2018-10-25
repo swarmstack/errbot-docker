@@ -1,3 +1,0 @@
-websockets
-requests
-ciscosparkapi

@@ -15,5 +15,3 @@ WAIT=10
 
 BOT_ADMINS='you@example.com'  # !! Don't leave that to "@CHANGE_ME" if you connect your errbot to a chat system !!
 BOT_IDENTITY = { 'TOKEN': 'YzUwNzZlTEtZVkOC00YTc3LThNTYTEwMzU3MI3Mexamplek3N2MMTcw', }
-CHATROOM_PRESENCE=('YGzvL3L1JPT0Y2VhMDmZTAtYjJiMyxMWU3LWmY2MtexampleOGE2OGMwYjZj',)
-

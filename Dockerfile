@@ -1,23 +1,19 @@
 FROM python:3.6-alpine3.8
-LABEL maintainer="mikeholloway+swarmstack@gmail.com"
+MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
 
 ARG BUILD_DATE
 ARG VCS_REF
-
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/swarmstack/errbot-docker.git" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0.0-rc1"
-
-MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
-
 
 COPY config.py requirements.txt /src/
 
 RUN apk add --no-cache --virtual .build-deps \
      gcc \
      build-base \
-     python-dev \
+     python3-dev \
      libffi-dev \
      openssl-dev \
      tzdata \
@@ -27,9 +23,16 @@ RUN apk add --no-cache --virtual .build-deps \
    && mkdir /src/data \
    && apk del .build-deps
 
-ENV ERRBOT_BASE_DIR /src
+ENV ERR_PYTHON_VERSION 3
+ENV ERR_PACKAGE err
 
-WORKDIR /src
+COPY provisioners/base.sh /provision.sh
+RUN /provision.sh && rm /provision.sh
+COPY provisioners/app.sh /provision.sh
+RUN /provision.sh && rm /provision.sh
+
+WORKDIR /err
 ENTRYPOINT ["errbot"]
 
-
+EXPOSE 3141 3142
+VOLUME ["/err/data/"]

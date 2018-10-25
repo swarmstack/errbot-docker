@@ -30,7 +30,7 @@ services:
     command: err
     configs:
       - source: errbot_config
-        target: /src/config.py
+        target: /err/config.py
     volumes:
-      - errbot-data:/src/data
+      - errbot-data:/err/data
 

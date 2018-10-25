@@ -1,6 +1,17 @@
 FROM python:3.6-alpine3.8
 LABEL maintainer="mikeholloway+swarmstack@gmail.com"
 
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/swarmstack/errbot-docker.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0.0-rc1"
+
+MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
+
+
 COPY config.py requirements.txt /src/
 
 RUN apk add --no-cache --virtual .build-deps \

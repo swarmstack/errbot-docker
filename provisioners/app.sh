@@ -16,10 +16,4 @@ mkdir -p /err/data
 chown err:err /err/data
 
 # Install Err itself
-if [[ $ERR_PYTHON_VERSION == "3" ]]; then
-
-	pip install $ERR_PACKAGE
-else
-	echo "Unsupported Python version requested through ERR_PYTHON_VERSION"
-	exit 1
-fi
+pip install err

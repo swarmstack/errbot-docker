@@ -6,12 +6,13 @@ import logging
 # https://raw.githubusercontent.com/errbotio/errbot/master/errbot/config-template.py
 
 AUTOINSTALL_DEPS = True
-BACKEND = 'XMPP'
+BACKEND = 'Text'
 BOT_DATA_DIR = r'/err/data'
-BOT_EXTRA_PLUGIN_DIR = r'/err/plugins'
+BOT_EXTRA_PLUGIN_DIR = r'/err/local_plugins'
+BOT_EXTRA_BACKEND_DIR = r'/err/local_backends'
 BOT_LOG_FILE = r'/err/errbot.log'
 BOT_LOG_LEVEL = logging.INFO
-WAIT=10
+WAIT=5
 
-BOT_ADMINS='you@example.com'  # !! Don't leave that to "@CHANGE_ME" if you connect your errbot to a chat system !!
-BOT_IDENTITY = { 'TOKEN': 'YzUwNzZlTEtZVkOC00YTc3LThNTYTEwMzU3MI3Mexamplek3N2MMTcw', }
+BOT_ADMINS='@CHANGE_ME'  # !! Don't leave that to "@CHANGE_ME" if you connect your errbot to a chat system !!
+#BOT_IDENTITY = { 'TOKEN': 'YzUwNzZlTEtZVkOC00YTc3LThNTYTEwMzU3MI3Mexamplek3N2MMTcw', }

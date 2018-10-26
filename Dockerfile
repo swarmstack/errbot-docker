@@ -21,15 +21,15 @@ RUN apk add --no-cache --virtual .build-deps \
      tzdata \
    && pip install --upgrade pip \
    && pip install -r /err/requirements.txt \
+   && rm -f /err/requirements.txt \
    && cp /usr/share/zoneinfo/America/Chicago /etc/localtime \
    && /base.sh \
-   && rm -f /bash.sh \
+   && rm -f /base.sh \
    && /app.sh \
    && rm -f /app.sh \
    && apk del .build-deps
 
-WORKDIR /err
-ENTRYPOINT ["errbot", "-c", "/err/config.py"]
-
 EXPOSE 3141 3142
 VOLUME ["/err/data/"]
+WORKDIR /err
+ENTRYPOINT ["errbot", "-c", "/err/config.py"]

@@ -6,10 +6,10 @@ import logging
 # https://raw.githubusercontent.com/errbotio/errbot/master/errbot/config-template.py
 
 AUTOINSTALL_DEPS = True
-#BACKEND = 'XMPP'
-BOT_DATA_DIR = r'/src/data'
-BOT_EXTRA_PLUGIN_DIR = r'/src/plugins'
-BOT_LOG_FILE = r'/src/errbot.log'
+BACKEND = 'XMPP'
+BOT_DATA_DIR = r'/err/data'
+BOT_EXTRA_PLUGIN_DIR = r'/err/plugins'
+BOT_LOG_FILE = r'/err/errbot.log'
 BOT_LOG_LEVEL = logging.INFO
 WAIT=10
 

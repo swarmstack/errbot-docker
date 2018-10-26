@@ -29,7 +29,7 @@ RUN apk add --no-cache --virtual .build-deps \
    && apk del .build-deps
 
 WORKDIR /err
-ENTRYPOINT ["errbot"]
+ENTRYPOINT ["errbot", "-c", "/err/config.py"]
 
 EXPOSE 3141 3142
 VOLUME ["/err/data/"]

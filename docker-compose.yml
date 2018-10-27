@@ -4,6 +4,16 @@ configs:
   errbot_config:
     file: ./config.py
 
+#  errbot_alerrtmanagerr-webex_plug:
+#    file: ./local_plugins/alerrtmanagerr-webex/alerrtmanagerr.plug
+#  errbot_alerrtmanagerr-webex_py:
+#    file: ./local_plugins/alerrtmanagerr-webex/alerrtmanagerr.py
+
+#  errbot_err-backend-cisco-webex-teams_plug:
+#    file: ./local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.plug
+#  errbot_err-backend-cisco-webex-teams_py:
+#    file: ./local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.py
+
 services:
   errbot:
     image: swarmstack/errbot-docker
@@ -21,5 +31,15 @@ services:
     configs:
       - source: errbot_config
         target: /err/config.py
+
+#      - source: errbot_alerrtmanagerr-webex_plug
+#        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.plug
+#      - source: errbot_alerrtmanagerr-webex_py
+#        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.py
+
+#      - source: errbot_err-backend-cisco-webex-teams_plug
+#        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.plug
+#      - source: errbot_err-backend-cisco-webex-teams_py
+#        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.py
     volumes:
       - ./local_bind_volume_dir:/err/data

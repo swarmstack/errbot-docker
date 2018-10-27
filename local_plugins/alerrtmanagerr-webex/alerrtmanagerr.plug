@@ -1,0 +1,9 @@
+[Core]
+name = AlerrtmanagerrWebex
+module = alerrtmanagerr
+
+[Documentation]
+description = Get alerts from Prometheus Alertmanager via webhooks
+
+[Python]
+version = 3

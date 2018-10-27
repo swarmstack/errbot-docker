@@ -1,12 +1,14 @@
-# swarmstack/errbot-docker
+## swarmstack/errbot-docker
 
 Docker image for [Errbot](http://errbot.io), a chat-bot designed to be easily deployable, extensible and maintainable.
 
 [https://hub.docker.com/r/swarmstack/errbot-docker/](https://hub.docker.com/r/swarmstack/errbot-docker/)
 
-Built from Alpine Linux 3.8 and Python 3.6. Functions as a vanilla Errbot with it's available backends, plus optional Cisco Webex Teams backend support. Support for other community-provided backends vi local_backends directory.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
+Built from Alpine Linux 3.8 and Python 3.6. Functions as a vanilla Errbot with it's available backends, plus optional Cisco Webex Teams backend support. Support for other community-provided backends.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
 
-## INSTALLATION
+---
+
+## RUN ERRBOT AS A CONTAINER
 
 To simply deploy Errbot in interactive _Text_ mode:
 
@@ -17,25 +19,36 @@ cd errbot-docker
 docker run -it swarmstack/errbot-docker:latest
 ```
 
-To instead run the image as detached container with exposed ports and connecting to your configured BACKEND:
+To run a detached container with the Webserver port exposed and connecting to your configured BACKEND:
 
 ```
 vi config.py
 docker run -d --entrypoint errbot -p 3141:3141 -v `pwd`:/err/local_config swarmstack/errbot-docker:latest -c /err/local_config/config.py
 ```
 
+You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible. Make the following change to config.py:
+
+    BOT_EXTRA_PLUGIN_DIR = r'/err/local_config/local_plugins'
+
+If you need to install a custom backend, add and remove necessary backend directories in your local_backends directory change config.py to:
+
+    BOT_EXTRA_BACKEND_DIR = r'/err/local_config/local_backends' 
+
+---
+
 ## AS A STACK ON A DOCKER SWARM HOST
 
-On a Docker swarm host (you can even _docker swarm init --advertise-addr 192.168.99.121_ a single host), so that just your config.py can be copied into the container:
+On a Docker swarm host (you can even _docker swarm init --advertise-addr 192.168.your.ip_ on a single host to enable it), perform the following commands. If you want Errbot data persisted to a different directory, be sure to change ./local_bind_volume_dir in docker-compose.yml below:
 
 ```
 vi config.py
-vi docker-compose.yml  # change ./local_bind_volume_dir if you want errbot data persisted elsewhere
+vi docker-compose.yml
 docker stack deploy -c docker-compose.yml errbot
 ```
 
-You can also add any local_plugins and local_backends to those directories before deploying, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible.
+You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible.
 
+--- 
 ## CONFIGURATION
 
 You should configure your social network of choice as BACKEND in config.py and configure it's parameters (generally in the form of BOT_CONFIG_ITEM values) before starting the bot. Refer to [Alertmanager Configuration](https://prometheus.io/docs/alerting/configuration/) for parameters required for your specific backend.
@@ -54,6 +67,8 @@ You can install plugins for the bot from their repos, as well as from some built
     botname plugin config PromQL
     botname plugin config PromQL {'PROMQL_URL': 'http://tasks.prometheus:9090/api/v1'}
 
+---
+
 ## SWARMSTACK USERS
 
 If you are a [swarmstack](https://github.com/swarmstack/swarmstack) user, start here instead. The docker-compose stack below can instead be deployed to automatically join the Errbot container to the _swarmstack_net_ network and use the same persistent storage settings.
@@ -66,7 +81,9 @@ vi config.py
 docker stack deploy -c docker-compose-swarmstack.yml errbot
 ```
 
-After performing these commands, you'll need to follow the CONFIGURATION section (above) with the bot via direct channel on your social network client. This will configure the Webserver and install the alerrtmanagerr webhook receiver plugin to Errbot, in order to receive Alertmanager webhooks. You'll also install the PromQL plugin to run queries against your Prometheus instance. The commands should all run as documented above.
+After performing these commands, you'll need to follow the CONFIGURATION section (above) with the bot via direct channel on your social network client. This will configure the Webserver and install the alerrtmanagerr webhook receiver plugin to Errbot, in order to receive Alertmanager webhooks. You'll also install the PromQL plugin to run queries against your Prometheus instance. The commands should all run as documented in the CONFIGURATION section above.
+
+---
 
 ## CISCO WEBEX TEAMS
 
@@ -74,16 +91,21 @@ For help with the Cisco Webex Teams backend, see [https://github.com/marksull/er
 
 To configure the bot you will need a Bot TOKEN. If you don't already have a bot setup on Cisco Webex Teams, details can be found here: [https://developer.webex.com/bots.html](https://developer.webex.com/bots.html)
 
+You'll need to make the following additional changes to config.py:
+
+    BACKEND = 'CiscoWebexTeams'
+    BOT_IDENTITY{TOKEN}
+
+And use webhook URLS in your Alertmanager configuration such as:
+
 ```
-cd /usr/local/src
-git clone https://github.com/swarmstack/errbot-docker
-cd errbot-docker
-vi config.py  # BACKEND: 'CiscoWebexTeams' and your BOT_IDENTITY{TOKEN}
-docker stack deploy -c docker-compose.yml errbot
-#  OR
-docker stack deploy -c docker-compose-swarmstack.yml errbot
+url: http://errbot:3141/alerrt-webex/<example-user>/<domain.ext>/
+url: http://errbot:3141/alerrt-webex-room/<room-name>/
 ```
 
+A custom local_plugin/alerrtmanagerr-webex has been included in this image to handle the webhook receiver URLs above for Webex Teams users.
+
+---
 ## ALERTMANAGER CONFIGURATION FOR PROMETHEUS
 
 Configure a webhook in your Alertmanager.yml to something like:
@@ -100,8 +122,14 @@ receivers:
     #    smarthost: 'outbound.example.com:25'
     webhook_configs:
       - send_resolved: false
-        url: http://errbot:3141/alerrt/example-user/domain.com/
+        url: http://errbot:3141/alerrt/<example-user>/<domain.ext>/
 ```
-See [Alertmanager Configuration](https://prometheus.io/docs/alerting/configuration/) for syntax
+See [Alertmanager Configuration](https://prometheus.io/docs/alerting/configuration/) for syntax configuring Alertmanager webhooks.
 
-[swarmstack](https://github.com/swarmstack/swarmstack) users should configure this in alertmanger/conf/alertmanager.yml
+The above configuration should work for [swarmstack](https://github.com/swarmstack/swarmstack) users  (_alertmanger/conf/alertmanager.yml_) and then re-deploy swarmstack.
+
+ If calling from your own Alertmanager servers, just change the errbot URL to the host IP where you are running this Errbot container. Change the example-user and domain.ext above to target a user on your social network.
+
+If you want to have the bot instead send alerts into a room (rather than direct conversation with a user as in the above config), see [errbot-alerrtmanagerr](https://github.com/mayflower/errbot-alerrtmanagerr) for webhook URL examples when using the built-in Errbot backends.
+
+

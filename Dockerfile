@@ -11,6 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 COPY config.py requirements.txt /err/
 COPY provisioners/base.sh /base.sh
 COPY provisioners/app.sh /app.sh
+COPY local_plugins /err/local_plugins/
 COPY local_backends /err/local_backends/
 
 RUN apk upgrade --no-cache

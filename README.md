@@ -21,6 +21,8 @@ cd errbot-docker
 docker run -it swarmstack/errbot-docker:latest
 ```
 
+---
+
 ## RUN ERRBOT AS A DETACHED CONTAINER
 
 To expose the Errbot webhook network port and connect Errbot to your chosen, you'll need to configure your social network of choice as the BACKEND in config.py and also any parameters that backend requires (generally in the form of BOT_CONFIG values) before starting the bot. Refer to the Errbot [User Guide](http://errbot.io/en/latest/user_guide/setup.html#id1) for parameters required for your specific built-in Errbot backend.
@@ -30,7 +32,7 @@ vi config.py
 docker run -d --entrypoint errbot -p 3141:3141 -v `pwd`:/err/local_config swarmstack/errbot-docker:latest -c /err/local_config/config.py
 ```
 
-You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible. Make the following change to config.py:
+You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible (they will be persisted within the /err/data Docker bind volume when running as a stack). Make the following change to config.py:
 
     BOT_EXTRA_PLUGIN_DIR = r'/err/local_config/local_plugins'
 
@@ -100,7 +102,7 @@ You'll need to make the following additional changes to config.py:
     BACKEND = 'CiscoWebexTeams'
     BOT_IDENTITY{TOKEN}
 
-And use webhook URLS in your Alertmanager configuration such as:
+And use webhook URLs in your Alertmanager configuration such as:
 
 ```
 url: http://errbot:3141/alerrt-webex/<example-user>/<domain.ext>/
@@ -132,8 +134,7 @@ See [Alertmanager Configuration](https://prometheus.io/docs/alerting/configurati
 
 The above configuration should work for [swarmstack](https://github.com/swarmstack/swarmstack) users  (_alertmanger/conf/alertmanager.yml_) and then re-deploy swarmstack.
 
- If calling from your own Alertmanager servers, just change the errbot URL to the host IP where you are running this Errbot container. Change the example-user and domain.ext above to target a user on your social network.
+If calling Errbot webhooks from your own Alertmanager servers, just change the _url: http://errbot_ above to the host IP where you are running this Errbot container. Change the example-user and domain.ext above to target a user on your social network.
 
 If you want to have the bot instead send alerts into a room (rather than direct conversation with a user as in the above config), see [errbot-alerrtmanagerr](https://github.com/mayflower/errbot-alerrtmanagerr) for webhook URL examples when using the built-in Errbot backends.
-
 

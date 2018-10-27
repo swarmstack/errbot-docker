@@ -10,7 +10,7 @@ The documentation below focuses on installing Errbot for use as a webhook receiv
 
 ---
 
-## RUN ERRBOT AS A CONTAINER
+## RUN ERRBOT AS A CONTAINER AND CONNECT TO TERMINAL
 
 To simply deploy Errbot in interactive _Text_ mode:
 
@@ -21,7 +21,9 @@ cd errbot-docker
 docker run -it swarmstack/errbot-docker:latest
 ```
 
-To run a detached container with the Webserver port exposed and connecting to your chosen [Errbot BACKEND](http://errbot.io/en/latest/user_guide/setup.html#id1):
+## RUN ERRBOT AS A DETACHED CONTAINER
+
+To expose the Errbot webhook network port and connect Errbot to your chosen, you'll need to configure your social network of choice as the BACKEND in config.py and also any parameters that backend requires (generally in the form of BOT_CONFIG values) before starting the bot. Refer to the Errbot [User Guide](http://errbot.io/en/latest/user_guide/setup.html#id1) for parameters required for your specific built-in Errbot backend.
 
 ```
 vi config.py
@@ -40,22 +42,22 @@ If you need to install a custom backend, add and remove necessary backend direct
 
 ## RUN ERRBOT AS A STACK ON A DOCKER SWARM HOST
 
-On a Docker swarm host (you can even _docker swarm init --advertise-addr 192.168.your.ip_ on a single host to enable it), perform the following commands. If you want Errbot data persisted to a different directory, be sure to change ./local_bind_volume_dir in docker-compose.yml below:
+On a Docker swarm host (you can even _docker swarm init --advertise-addr 192.168.your.ip_ on a single host to enable it), perform the following commands. If you want Errbot data persisted to a different directory, be sure to change ./local_bind_volume_dir in docker-compose.yml below.
+
+You should configure your social network of choice as BACKEND in config.py and configure it's parameters (generally in the form of BOT_CONFIG_ITEM values) before starting the bot. Refer to [Errbot BACKEND](http://errbot.io/en/latest/user_guide/setup.html#id1) for parameters required for your specific Errbot backend.
 
 ```
 vi config.py
 vi docker-compose.yml
 docker stack deploy -c docker-compose.yml errbot
 ```
-
+ 
 You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible.
 
 --- 
 ## CONFIGURATION
 
-You should configure your social network of choice as BACKEND in config.py and configure it's parameters (generally in the form of BOT_CONFIG_ITEM values) before starting the bot. Refer to [Alertmanager Configuration](https://prometheus.io/docs/alerting/configuration/) for parameters required for your specific backend.
-
-After altering config.py to your liking and starting the bot as a container or stack (above), from within your social network client: start a direct conversation with the bot and configure the bot's web server if you want the bot to able to receive webhooks, such as by the Alertmanager errbot-alerrtmanagerr plugin:
+After starting the bot as a container or stack (above), start a direct conversation with the bot on the social network you configured the bot to use, and configure the bot's web server if you want the bot to able to receive webhooks, such as by the Alertmanager errbot-alerrtmanagerr plugin:
 
     botname plugin config Webserver
     botname plugin config Webserver {'HOST': '0.0.0.0',  'PORT': 3141}

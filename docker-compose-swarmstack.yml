@@ -27,7 +27,6 @@ services:
           memory: 512M
         reservations:
           memory: 384M
-    command: err
     configs:
       - source: errbot_config
         target: /err/config.py

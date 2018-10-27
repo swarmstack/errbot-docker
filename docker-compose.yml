@@ -15,7 +15,9 @@ services:
           memory: 512M
         reservations:
           memory: 384M
-    command: err
+    ports:
+      - "3141:3141"
+      - "3142:3142"
     configs:
       - source: errbot_config
         target: /err/config.py

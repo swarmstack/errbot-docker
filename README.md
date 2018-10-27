@@ -18,27 +18,20 @@ To simply deploy Errbot in interactive _Text_ mode:
 cd /usr/local/src
 git clone https://github.com/swarmstack/errbot-docker
 cd errbot-docker
-docker run -it swarmstack/errbot-docker:latest
+docker run -it swarmstack/errbot-docker
 ```
 
 ---
 
 ## RUN ERRBOT AS A DETACHED CONTAINER
 
-To expose the Errbot webhook network port and connect Errbot to your chosen, you'll need to configure your social network of choice as the BACKEND in config.py and also any parameters that backend requires (generally in the form of BOT_CONFIG values) before starting the bot. Refer to the Errbot [User Guide](http://errbot.io/en/latest/user_guide/setup.html#id1) for parameters required for your specific built-in Errbot backend.
+To expose the Errbot webhook network port and connect Errbot to your configured backend social network, set BACKEND in config.py and also any parameters that backend requires (generally in the form of BOT_CONFIG values) before starting the bot. Refer to the Errbot [User Guide](http://errbot.io/en/latest/user_guide/setup.html#id1) for parameters required for your specific built-in Errbot backend, or the section below for Cisco Webex Teams users.
 
 ```
 vi config.py
-docker run -d --entrypoint errbot -p 3141:3141 -v `pwd`:/err/local_config swarmstack/errbot-docker:latest -c /err/local_config/config.py
+docker run -d --entrypoint errbot -p 3141:3141 -v `pwd`:/err/local_config \
+ swarmstack/errbot-docker -c /err/local_config/config.py
 ```
-
-You can also add any local_plugins or local_backends to those directories before deploying above, although it's recommended to instead install plugins as documented in the CONFIGURATION section where possible (they will be persisted within the /err/data Docker bind volume when running as a stack). Make the following change to config.py:
-
-    BOT_EXTRA_PLUGIN_DIR = r'/err/local_config/local_plugins'
-
-If you need to install a custom backend, add and remove necessary local_backends directories and then change config.py to:
-
-    BOT_EXTRA_BACKEND_DIR = r'/err/local_config/local_backends' 
 
 ---
 
@@ -53,6 +46,8 @@ vi config.py
 vi docker-compose.yml
 docker stack deploy -c docker-compose.yml errbot
 ```
+
+---
 
 ## ADDING YOUR OWN BACKEND
 

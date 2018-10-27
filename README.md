@@ -38,7 +38,7 @@ If you need to install a custom backend, add and remove necessary backend direct
 
 ---
 
-## AS A STACK ON A DOCKER SWARM HOST
+## RUN ERRBOT AS A STACK ON A DOCKER SWARM HOST
 
 On a Docker swarm host (you can even _docker swarm init --advertise-addr 192.168.your.ip_ on a single host to enable it), perform the following commands. If you want Errbot data persisted to a different directory, be sure to change ./local_bind_volume_dir in docker-compose.yml below:
 

@@ -1,10 +1,10 @@
 # swarmstack/errbot-docker
 
-Docker image for [Err](http://errbot.io), a chat-bot designed to be easily deployable, extensible and maintainable.
+Docker image for [Errbot](http://errbot.io), a chat-bot designed to be easily deployable, extensible and maintainable.
 
 [https://hub.docker.com/r/swarmstack/errbot-docker/](https://hub.docker.com/r/swarmstack/errbot-docker/)
 
-Built from Alpine Linux 3.8 and Python 3.6. Functions as a vanilla Err with it's available backends, plus optional Cisco Webex Teams backend support. Support for other community-provided backends vi local_backends directory.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
+Built from Alpine Linux 3.8 and Python 3.6. Functions as a vanilla Errbot with it's available backends, plus optional Cisco Webex Teams backend support. Support for other community-provided backends vi local_backends directory.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
 
 ## INSTALLATION
 

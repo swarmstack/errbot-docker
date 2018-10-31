@@ -61,7 +61,7 @@ And if you need to install a custom backend, add and remove necessary local_back
 
     BOT_EXTRA_BACKEND_DIR = r'/err/local_config/local_backends' 
 
-If deploying as a stack, you don't need to make the changes above, but you'll instead need to update docker-compose.yml with your own local_plugins or local_backends files by uncommenting and altering both sets of commented configs examples. Docker configs have a line of 512kbytes each. Consider only adding local_backends using this method.
+If deploying as a stack, you don't need to make the changes above, but you'll instead need to update docker-compose.yml with your own local_plugins or local_backends files by uncommenting and altering both sets of commented configs examples. Docker configs have a limit of 512kbytes each. Consider only adding local_backends when needed using this method.
 
 --- 
 ## CONFIGURATION
@@ -74,11 +74,12 @@ After starting the bot as a container or stack (above), start a direct conversat
 You can install plugins for the bot from their repos, as well as from some built-in repos that Errbot maintainer gbin collects. For example:
 
     repos install https://github.com/mayflower/errbot-alerrtmanagerr
+    # You can skip this repo if following the section for Cisco Webex Teams
 
     repos install https://github.com/swarmstack/errbot-promql
 
     plugin config PromQL
-    plugin config PromQL {'PROMQL_URL': 'http://tasks.prometheus:9090/api/v1'}
+    plugin config PromQL {'PROMQL_URL': 'http://prometheus:9090/api/v1'}
 
 ---
 

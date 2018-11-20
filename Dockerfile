@@ -33,5 +33,6 @@ RUN apk add --no-cache --virtual .build-deps \
 
 EXPOSE 3141 3142
 VOLUME ["/err/data/"]
+HEALTHCHECK --interval=25s --timeout=2s --start-period=30s CMD /usr/bin/curl -s -I -X GET http://localhost:3141
 WORKDIR /err
 ENTRYPOINT ["errbot", "-c", "/err/config.py"]

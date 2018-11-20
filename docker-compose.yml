@@ -4,11 +4,12 @@ configs:
   errbot_config:
     file: ./config.py
 
+# These are already available in swarmstack/errbot-docker/ and are examples
 #  errbot_alerrtmanagerr-webex_plug:
 #    file: ./local_plugins/alerrtmanagerr-webex/alerrtmanagerr.plug
 #  errbot_alerrtmanagerr-webex_py:
 #    file: ./local_plugins/alerrtmanagerr-webex/alerrtmanagerr.py
-
+#
 #  errbot_err-backend-cisco-webex-teams_plug:
 #    file: ./local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.plug
 #  errbot_err-backend-cisco-webex-teams_py:
@@ -17,6 +18,19 @@ configs:
 services:
   errbot:
     image: swarmstack/errbot-docker
+    configs:
+      - source: errbot_config
+        target: /err/config.py
+      # These are already available in swarmstack/errbot-docker/ and are examples
+      #      - source: errbot_alerrtmanagerr-webex_plug
+      #        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.plug
+      #      - source: errbot_alerrtmanagerr-webex_py
+      #        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.py
+      #
+      #      - source: errbot_err-backend-cisco-webex-teams_plug
+      #        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.plug
+      #      - source: errbot_err-backend-cisco-webex-teams_py
+      #        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.py
     deploy:
       mode: replicated
       replicas: 1
@@ -25,21 +39,12 @@ services:
           memory: 512M
         reservations:
           memory: 384M
+    healthcheck:
+      test: "/usr/bin/curl -s -I -X GET http://localhost:3141"
+      interval: 25s
+      timeout: 3s
+      start-period: 30s
     ports:
       - "3141:3141"
-      - "3142:3142"
-    configs:
-      - source: errbot_config
-        target: /err/config.py
-
-#      - source: errbot_alerrtmanagerr-webex_plug
-#        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.plug
-#      - source: errbot_alerrtmanagerr-webex_py
-#        target: /err/local_plugins/alerrtmanagerr-webex/alerrtmanagerr.py
-
-#      - source: errbot_err-backend-cisco-webex-teams_plug
-#        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.plug
-#      - source: errbot_err-backend-cisco-webex-teams_py
-#        target: /err/local_backends/err-backend-cisco-webex-teams/CiscoWebexTeams.py
     volumes:
       - ./local_bind_volume_dir:/err/data

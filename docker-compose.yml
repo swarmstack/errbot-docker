@@ -39,11 +39,12 @@ services:
           memory: 512M
         reservations:
           memory: 384M
-    healthcheck:
-      test: "/usr/bin/curl -s -I -X GET http://localhost:3141"
-      interval: 25s
-      timeout: 3s
-      start-period: 30s
+    #Add after enabling errbot webserver
+    #healthcheck:
+    #  test: "/usr/bin/curl -s -I -X GET http://localhost:3141"
+    #  interval: 25s
+    #  timeout: 3s
+    #  start-period: 30s
     ports:
       - "3141:3141"
     volumes:

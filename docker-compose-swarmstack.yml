@@ -51,7 +51,7 @@ services:
           memory: 512M
         reservations:
           memory: 384M
-    #Add after enabling errbot webserver
+    #Add healthcheck after enabling errbot webserver
     #healthcheck:
     #  test: "/usr/bin/curl -s -I -X GET http://localhost:3141"
     #  interval: 25s

@@ -5,13 +5,18 @@ import sys
 import logging
 import uuid
 import websockets
+import string
+import random
+import os
 from markdown import markdown
 
 from errbot.core import ErrBot
-from errbot.backends.base import Message, Person, Room, RoomOccupant, OFFLINE, RoomDoesNotExistError
+from errbot.backends.base import Message, Person, Room, RoomOccupant, OFFLINE, RoomDoesNotExistError, Stream
 from errbot import rendering
 
 import webexteamssdk
+
+__version__="1.4.0"
 
 log = logging.getLogger('errbot.backends.CiscoWebexTeams')
 
@@ -24,7 +29,7 @@ DEVICE_DATA = {
     "deviceType"    : "DESKTOP",
     "localizedModel": "python",
     "model"         : "python",
-    "name"          : "python-webex-teams-client",
+    "name"          : f"python-webex-teams-client-{''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))}",
     "systemName"    : "python-webex-teams-client",
     "systemVersion" : "0.1"
 }
@@ -523,6 +528,47 @@ class CiscoWebexTeamsBackend(ErrBot):
         else:
             self.webex_teams_api.messages.create(roomId=mess.to.room.id, text=mess.body, markdown=md)
 
+    def _teams_upload(self, stream):
+        """
+        Performs an upload defined in a stream
+        :param stream: Stream object
+        :return: None
+        """
+
+        try:
+            stream.accept()
+            log.exception(f'Upload of {stream.raw.name} to {stream.identifier} has started.')
+
+            if type(stream.identifier) == CiscoWebexTeamsPerson:
+                self.webex_teams_api.messages.create(toPersonId=stream.identifier.id, files=[stream.raw.name])
+            else:
+                self.webex_teams_api.messages.create(roomId=stream.identifier.room.id, files=[stream.raw.name])
+
+            stream.success()
+            log.exception(f'Upload of {stream.raw.name} to {stream.identifier} has completed.')
+
+        except Exception:
+            stream.error()
+            log.exception(f'Upload of {stream.raw.name} to {stream.identifier} has failed.')
+
+        finally:
+            stream.close()
+
+    def send_stream_request(self, identifier, fsource, name='file', size=None, stream_type=None):
+        """
+        Send a file to Cisco Webex Teams
+
+        :param user: is the identifier of the person you want to send it to.
+        :param fsource: is a file object you want to send.
+        :param name: is an optional filename for it.
+        :param size: not supported in Webex Teams backend
+        :param stream_type: not supported in Webex Teams backend
+        """
+        log.debug(f'Requesting upload of {fsource.name} to {identifier}.')
+        stream = Stream(identifier, fsource, name, size, stream_type)
+        self.thread_pool.apply_async(self._teams_upload, (stream,))
+        return stream
+
     def build_reply(self, mess, text=None, private=False, threaded=False):
         """
         Build a reply in the format expected by errbot by swapping the to and from source and destination
@@ -562,6 +608,8 @@ class CiscoWebexTeamsBackend(ErrBot):
                                }
                                }
                         await ws.send(json.dumps(msg))
+
+                        self.reset_reconnection_count()
 
                         while True:
                             message = await ws.recv()

@@ -29,7 +29,7 @@ configs:
 
 services:
   errbot:
-    image: swarmstack/errbot-docker:5.2.0
+    image: swarmstack/errbot-docker:6.1.1
     configs:
       - source: errbot_config
         target: /err/config.py

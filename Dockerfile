@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.9
+FROM python:3.6.10-alpine3.11
 MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
 
 ARG BUILD_DATE

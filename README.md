@@ -110,7 +110,7 @@ To configure the bot you will need a Bot TOKEN. If you don't already have a bot 
 You'll need to make the following additional changes to config.py:
 
     BACKEND = 'CiscoWebexTeams'
-    BOT_IDENTITY{TOKEN}
+    BOT_IDENTITY = { 'TOKEN': 'Your_Token', }
 
 And use webhook URLs in your Alertmanager configuration such as:
 

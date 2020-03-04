@@ -10,7 +10,7 @@ echo LC_ALL="en_US.utf8" >> /etc/environment
 echo DEBIAN_FRONTEND="noninteractive" >> /etc/environment
 . /etc/environment
 
-$APTINSTALL python3 python3-dev
+#$APTINSTALL python3.7 python3.7-dev
 
 # TLS certs and sudo are needed, curl and vim are tremendously useful when entering
 # a container for debugging (while barely increasing image size)

@@ -19,4 +19,4 @@ mkdir -p /err/local_plugins
 mkdir -p /err/local_backends
 
 # Install Err itself
-pip install err pytest
+pip install errbot pytest

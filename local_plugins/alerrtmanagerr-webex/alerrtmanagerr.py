@@ -10,26 +10,34 @@ class AlerrtmanagerrWebex(BotPlugin):
     def alerrt(self, data, recipient, server):
         identifier = self.build_identifier(recipient + "@" + server)
         for alert in data['alerts']:
+            if 'description' in alert['annotations']:
+                title = alert['annotations']['description']
+            else:
+                title = alert['annotations']['message']
             self.send_card(
                 to=identifier,
                 summary='[{}] {}'.format(
                     data['status'].upper(),
-                    data['commonLabels']['alertname']
+                    alert['labels']['alertname']
                 ),
-                title=alert['annotations']['description'],
+                title=title,
             )
 
     @webhook('/alerrt-webex-room/<room>/')
     def alerrtt(self, data, room):
         identifier = self.query_room(room)
         for alert in data['alerts']:
+            if 'description' in alert['annotations']:
+                title = alert['annotations']['description']
+            else:
+                title = alert['annotations']['message']
             self.send_card(
                 to=identifier,
                 summary='[{}] {}'.format(
                     data['status'].upper(),
-                    data['commonLabels']['alertname']
+                    alert['labels']['alertname']
                 ),
-                title=alert['annotations']['description'],
+                title=title,
             )
 
 # Alertmanager sends this JSON per https://prometheus.io/docs/alerting/configuration/#webhook_config

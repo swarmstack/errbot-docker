@@ -10,7 +10,9 @@ class AlerrtmanagerrWebex(BotPlugin):
     def alerrt(self, data, recipient, server):
         identifier = self.build_identifier(recipient + "@" + server)
         for alert in data['alerts']:
-            if 'description' in alert['annotations']:
+            if 'summary' in alert['annotations']:
+                title = alert['annotations']['summary']
+            elif 'description' in alert['annotations']:
                 title = alert['annotations']['description']
             else:
                 title = alert['annotations']['message']
@@ -27,7 +29,9 @@ class AlerrtmanagerrWebex(BotPlugin):
     def alerrtt(self, data, room):
         identifier = self.query_room(room)
         for alert in data['alerts']:
-            if 'description' in alert['annotations']:
+            if 'summary' in alert['annotations']:
+                title = alert['annotations']['summary']
+            elif 'description' in alert['annotations']:
                 title = alert['annotations']['description']
             else:
                 title = alert['annotations']['message']

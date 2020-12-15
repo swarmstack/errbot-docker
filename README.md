@@ -4,7 +4,7 @@ Docker image for [Errbot](http://errbot.io), a chat-bot designed to be easily de
 
 [https://hub.docker.com/r/swarmstack/errbot-docker/](https://hub.docker.com/r/swarmstack/errbot-docker/)
 
-Errbot 6.1.5 using [python:3.8.6-alpine3.12](https://hub.docker.com/_/python) container - Functions as a vanilla Errbot with it's available backends, plus optional Cisco Webex Teams backend support. Support for other community-provided backends.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
+Errbot 6.1.6 using [python:3.9.1-alpine3.12](https://hub.docker.com/_/python) container - Functions as a vanilla Errbot with it's available backends, plus optional Cisco Webex Teams backend (1.6.0) support. Support for other community-provided backends.  Plugins can be installed and configured via the bot. [swarmstack](https://github.com/swarmstack/swarmstack) users should begin at the SWARMSTACK USERS section.
 
 The documentation below focuses on installing Errbot for use as a webhook receiver for Prometheus Alertmanager and adding Prometheus ChatOps to the bot, but the image is generally useful as a working Errbot with support for installing other Errbot plugins and backends.
 
